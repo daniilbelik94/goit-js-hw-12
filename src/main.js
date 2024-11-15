@@ -31,10 +31,11 @@ async function onFormSubmit(e) {
     e.preventDefault();
 
     currentPage = 1;
+    quantityElements = 0;
 
     searchInputValue = form.elements.search.value.trim();
 
-    if (searchInputValue.trim() === '') {
+    if (searchInputValue === '') {
       return;
     }
 
@@ -46,8 +47,7 @@ async function onFormSubmit(e) {
 
     if (response.data.hits.length === 0) {
       iziToast.show({
-        message:
-          'Sorry, there are no images matching your search query. Please, try again!',
+        message: 'Sorry, there are no images matching your search query. Please, try again!',
         position: 'topRight',
         backgroundColor: '#ef4040',
         titleColor: '#fff',
@@ -80,8 +80,26 @@ async function onFormSubmit(e) {
     loaderBox.classList.remove('loader-box-active');
     loadBtn.classList.add('loader-box-active');
     quantityElements += response.data.hits.length;
+
+    if (quantityElements < 15) {
+      loadBtn.classList.remove('loader-box-active');
+    }
   } catch (error) {
-    console.log(err);
+    console.log(error);
+    iziToast.show({
+      message: 'An error occurred. Please try again later.',
+      position: 'topRight',
+      backgroundColor: '#ef4040',
+      titleColor: '#fff',
+      titleSize: '16px',
+      titleLineHeight: '24px',
+      messageColor: '#fff',
+      messageSize: '16px',
+      messageLineHeight: '24px',
+      iconUrl: errorMessage,
+      maxWidth: '385px',
+      timeout: 5000,
+    });
   }
 }
 
@@ -129,5 +147,19 @@ async function onLoadBtnClick() {
     }
   } catch (error) {
     console.log(error);
+    iziToast.show({
+      message: 'An error occurred. Please try again later.',
+      position: 'topRight',
+      backgroundColor: '#ef4040',
+      titleColor: '#fff',
+      titleSize: '16px',
+      titleLineHeight: '24px',
+      messageColor: '#fff',
+      messageSize: '16px',
+      messageLineHeight: '24px',
+      iconUrl: errorMessage,
+      maxWidth: '385px',
+      timeout: 5000,
+    });
   }
 }
